@@ -40,13 +40,18 @@ export default class DeviceParameters extends Component<{}, IState> {
     return m;
   }
 
-  handlerValueOnClick(e: any) {
+  handlerModalShow(e: any) {
     console.log(e);
-    this.setState({showModal: !this.state.showModal})
+    this.setState({showModal: true})
+  }
+
+  handlerModalClose(e: any) {
+    console.log(e);
+    this.setState({showModal: false})
   }
 
   render() {
-    const modal = this.state.showModal ? (<Modal/>) : null;
+    const modal = this.state.showModal ? (<Modal onClick={this.handlerModalClose.bind(this)}/>) : null;
 
     return(
       <>
@@ -60,7 +65,7 @@ export default class DeviceParameters extends Component<{}, IState> {
                         <th>Value</th>
                     </tr>
                 </thead>
-                <tbody onClick = {(e)=>this.handlerValueOnClick(e)}>
+                <tbody onClick = {(e)=>this.handlerModalShow(e)}>
                   {
                     Array.from(this.state.parameters.entries(), ([key, item]) => {
                     const  {name, value, msu} = item;
