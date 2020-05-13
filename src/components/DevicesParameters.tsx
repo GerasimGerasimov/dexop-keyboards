@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import Modal from './Modal';
 
 interface IState {
   showModal: boolean;
@@ -45,7 +46,7 @@ export default class DeviceParameters extends Component<{}, IState> {
   }
 
   render() {
-    const modal = this.state.showModal ? (null) : null;
+    const modal = this.state.showModal ? (<Modal/>) : null;
 
     return(
       <>
