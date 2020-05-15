@@ -10,7 +10,7 @@ export const Parameters = {
         name: 'Iexc',
         value: 100,
         type: 'TFloat',
-        msu: 'V'
+        msu: 'A'
     },
     Uexc : {
         name: 'Uexc',

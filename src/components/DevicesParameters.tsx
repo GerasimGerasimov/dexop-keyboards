@@ -34,12 +34,14 @@ export default class DeviceParameters extends Component<{}, IState> {
   private handlerModalShow(event: any) {
     const {row, col} = getTableClickRowCol(event);
     const p:TParameter | undefined = getParameterByRow(this.state.parameters, row);
-    const type = p?.type || ''
-    const keyBoard = this.getKeyBoardType(type);
-    this.setState({
-      showModal: true,
-      keyBoard
-    })
+    if (p) {
+      const type = p.type || ''
+      const keyBoard = this.getKeyBoardType(type);
+      this.setState({
+        showModal: true,
+        keyBoard
+      })
+    }
   }
 
   private getKeyBoardType(ParameterType: string): string {
@@ -54,7 +56,8 @@ export default class DeviceParameters extends Component<{}, IState> {
   }
 
   render() {
-
+    //TODO если объект не найден, или кликнул по заголовку
+    //не должна открываться окно клавы
     const modal = this.state.showModal
     ? (<Modal>
         <KeyBoard keyBoardType={this.state.keyBoard} onClick={this.handlerModalClose.bind(this)}/>
