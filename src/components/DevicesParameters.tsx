@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import Modal from './HOC/Modal';
-import KeyBoardNumeric from './UI/KeyBoards/KeyBoardNumeric';
-import KeyBoardBoolean from './UI/KeyBoards/KeyBoardBoolean';
+import KeyBoard from './UI/KeyBoards/KeyBoard';
 
 interface IState {
   showModal: boolean;
@@ -16,7 +15,7 @@ class TParameter {
     msu: string = '';
 }
 export default class DeviceParameters extends Component<{}, IState> {
-
+   
   constructor (props: any){
     super(props)
     this.state = {
@@ -25,6 +24,7 @@ export default class DeviceParameters extends Component<{}, IState> {
         keyBoard: 'KeyBoardNumeric' 
     };
   }
+
   componentWillMount () {
     const P: any = Parameters
     for (let key in P) {
@@ -35,7 +35,7 @@ export default class DeviceParameters extends Component<{}, IState> {
     }
   }
 
-  getData(p: any): Map<string, TParameter> {
+  private getData(p: any): Map<string, TParameter> {
     const m: Map<string, TParameter> = new Map<string, TParameter>()
     for (let key in p) {
         const value: TParameter = {... p[key]};
@@ -44,7 +44,7 @@ export default class DeviceParameters extends Component<{}, IState> {
     return m;
   }
 
-  handlerModalShow(event: any) {
+  private handlerModalShow(event: any) {
     const {row, col} = getTableClickRowCol(event);
     const p:TParameter | undefined = this.getParameterByRow(row);
     const type = p?.type || ''
@@ -55,7 +55,7 @@ export default class DeviceParameters extends Component<{}, IState> {
     })
   }
 
-  getKeyBoardType(ParameterType: string): string {
+  private getKeyBoardType(ParameterType: string): string {
     switch (ParameterType) {
       case 'TBit':
         return 'KeyBoardBoolean'
@@ -85,20 +85,13 @@ export default class DeviceParameters extends Component<{}, IState> {
     this.setState({showModal: false})
   }
 
-  getKeyBoard(): any{
-    switch (this.state.keyBoard) {
-      case 'KeyBoardBoolean':
-        return KeyBoardBoolean
-      case 'KeyBoardNumeric':
-      default:
-        return KeyBoardNumeric
-    }
-  }
-
   render() {
+
+    
+
     const modal = this.state.showModal ? (
     <Modal>
-      <{this.getKeyBoard} onClick={this.handlerModalClose.bind(this)}/>
+      <KeyBoard keyBoardType={this.state.keyBoard} onClick={this.handlerModalClose.bind(this)}/>
     </Modal>
     ) : null;
 
