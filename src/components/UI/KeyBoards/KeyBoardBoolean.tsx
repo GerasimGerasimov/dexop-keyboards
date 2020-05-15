@@ -1,14 +1,7 @@
 import React, {Component} from 'react'
+import {IKeyBoardProps } from './IKeyBoards';
 
-interface IEventFunction {
-    (event: any): void;
-}
-
-interface IModalProps {
-    onClick: IEventFunction;
-}
-
-export default class KeyBoardBoolean extends Component<IModalProps, {}> {
+export default class KeyBoardBoolean extends Component<IKeyBoardProps, {}> {
 
   constructor (props: any){
     super(props)

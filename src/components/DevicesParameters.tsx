@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import Modal from './HOC/Modal';
 import KeyBoard from './UI/KeyBoards/KeyBoard';
+import { Parameters, TParameter, getData } from '../datasets/dataset';
+import { getTableClickRowCol, getParameterByRow } from '../helpers/tables';
 
 interface IState {
   showModal: boolean;
@@ -8,12 +10,6 @@ interface IState {
   keyBoard: string; 
 }
 
-class TParameter {
-    name: string ='';
-    value: number = 0;
-    type: string = '';
-    msu: string = '';
-}
 export default class DeviceParameters extends Component<{}, IState> {
    
   constructor (props: any){
@@ -30,23 +26,14 @@ export default class DeviceParameters extends Component<{}, IState> {
     for (let key in P) {
         const item: TParameter = {... P[key]};
         this.setState({
-            parameters: this.getData(Parameters)
+            parameters: getData(Parameters)
         })
     }
   }
 
-  private getData(p: any): Map<string, TParameter> {
-    const m: Map<string, TParameter> = new Map<string, TParameter>()
-    for (let key in p) {
-        const value: TParameter = {... p[key]};
-        m.set(key, value)
-    }
-    return m;
-  }
-
   private handlerModalShow(event: any) {
     const {row, col} = getTableClickRowCol(event);
-    const p:TParameter | undefined = this.getParameterByRow(row);
+    const p:TParameter | undefined = getParameterByRow(this.state.parameters, row);
     const type = p?.type || ''
     const keyBoard = this.getKeyBoardType(type);
     this.setState({
@@ -57,43 +44,22 @@ export default class DeviceParameters extends Component<{}, IState> {
 
   private getKeyBoardType(ParameterType: string): string {
     switch (ParameterType) {
-      case 'TBit':
-        return 'KeyBoardBoolean'
-      case 'TFloat':
-      default:
-        return 'KeyBoardNumeric'
-    }
-  }
-
-  private getParameterByRow(row: number): TParameter | undefined {
-    try {
-      if (!row) throw RowCountError('Row number in not correct');
-      let count: number = 1; 
-      this.state.parameters.forEach((value: TParameter) => {
-        if (count++ === row) {
-          throw SuccessfullyValueFound('Element is found', value);
-        }
-      })
-      throw FailedSearchOfValue('Element not found');
-    } catch (e) {
-        return e.value || undefined;
+      case 'TBit':              return 'KeyBoardBoolean'
+      case 'TFloat':  default:  return 'KeyBoardNumeric'
     }
   }
 
   handlerModalClose(e: any) {
-    console.log(e);
     this.setState({showModal: false})
   }
 
   render() {
 
-    
-
-    const modal = this.state.showModal ? (
-    <Modal>
-      <KeyBoard keyBoardType={this.state.keyBoard} onClick={this.handlerModalClose.bind(this)}/>
-    </Modal>
-    ) : null;
+    const modal = this.state.showModal
+    ? (<Modal>
+        <KeyBoard keyBoardType={this.state.keyBoard} onClick={this.handlerModalClose.bind(this)}/>
+      </Modal>)
+    : null;
 
     return(
       <>
@@ -125,67 +91,5 @@ export default class DeviceParameters extends Component<{}, IState> {
           {modal}
       </>
     )
-  }
-}
-
-const Parameters = {
-    Iexc : {
-        name: 'Iexc',
-        value: 100,
-        type: 'TFloat',
-        msu: 'V'
-    },
-    Uexc : {
-        name: 'Uexc',
-        value: 5,
-        type: 'TFloat',
-        msu: 'V'
-    },
-    Toggle : {
-        name: 'Toggle',
-        value: 0,
-        type: 'TBit',
-        msu: ''
-    }
-}
-
-function getTableClickRowCol(event: any): {row: number, col: number} {
-  let cell: any = event.target;
-  if (cell.tagName.toLowerCase() !== 'td')
-    return {row: 0, col: 0};
-  let row = cell.parentNode.rowIndex;
-  let col = cell.cellIndex;
-  return {row, col};
-}
-
-class TAppError {
-  message: string = '';
-  name: string = '';
-  stack?: any
-  value?: any;
-}
-
-function RowCountError(message: string): TAppError {
-  return {
-    message,
-    name:'RowCountError',
-    value: undefined
-  }
-}
-
-function SuccessfullyValueFound(message: string, value: any): TAppError {
-  return {
-    message,
-    value,
-    name:'SuccessfullyValueFound',
-    stack: value.stack
-  }
-}
-
-function FailedSearchOfValue(message: string): TAppError {
-  return {
-    message,
-    name:'FailedSearchOfValue',
-    value: undefined
   }
 }

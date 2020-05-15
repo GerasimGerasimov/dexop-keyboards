@@ -1,29 +1,23 @@
 import React from 'react'
 import KeyBoardNumeric from './KeyBoardNumeric';
 import KeyBoardBoolean from './KeyBoardBoolean';
+import {IKeyBoardProps } from './IKeyBoards';
 
-interface IEventFunction {
-    (event: any): void;
-}
-
-interface IKeyBoardProps {
+interface IKeyBoardsProps extends IKeyBoardProps {
     keyBoardType: string
-    onClick: IEventFunction;
 }
 
-export default class KeyBoard extends React.Component<IKeyBoardProps,{}> {
+export default class KeyBoard extends React.Component<IKeyBoardsProps,{}> {
   render() {
     const { keyBoardType, ...props } = this.props
 
-    let KeyBoard = null
-    switch (keyBoardType) {
-      case 'KeyBoardBoolean':
-            KeyBoard = KeyBoardBoolean
-        break
-      case 'KeyBoardNumeric':
-      default: 
-        KeyBoard = KeyBoardNumeric
+    const KeyBoards: any = {
+        KeyBoardBoolean,
+        KeyBoardNumeric,
+        'default': KeyBoardNumeric
     }
+
+    const KeyBoard =  KeyBoards[keyBoardType] || KeyBoards['default'];
 
     return (
       React.createElement(KeyBoard, { ...props})
