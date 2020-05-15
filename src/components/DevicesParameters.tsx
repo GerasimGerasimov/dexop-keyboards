@@ -41,9 +41,25 @@ export default class DeviceParameters extends Component<{}, IState> {
     return m;
   }
 
-  handlerModalShow(e: any) {
-    console.log(e);
-    this.setState({showModal: true})
+  handlerModalShow(event: any) {
+    const {row, col} = getTableClickRowCol(event);
+    console.log(this.getParameterByRow(row));
+    //this.setState({showModal: true})
+  }
+
+  private getParameterByRow(row: number): TParameter | undefined {
+    try {
+      if (!row) throw RowCountError('Row number in not correct');
+      let count: number = 1; 
+      this.state.parameters.forEach((value: TParameter) => {
+        if (count++ === row) {
+          throw SuccessfullyValueFound('Element is found', value);
+        }
+      })
+      throw FailedSearchOfValue('Element not found');
+    } catch (e) {
+        return e.value || undefined;
+    }
   }
 
   handlerModalClose(e: any) {
@@ -62,7 +78,7 @@ export default class DeviceParameters extends Component<{}, IState> {
       <>
         <h1>Settings</h1>
           <div> 
-            <table>
+            <table onClick = {(e)=>this.handlerModalShow(e)}>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -70,7 +86,7 @@ export default class DeviceParameters extends Component<{}, IState> {
                         <th>Value</th>
                     </tr>
                 </thead>
-                <tbody onClick = {(e)=>this.handlerModalShow(e)}>
+                <tbody>
                   {
                     Array.from(this.state.parameters.entries(), ([key, item]) => {
                     const  {name, value, msu} = item;
@@ -78,7 +94,7 @@ export default class DeviceParameters extends Component<{}, IState> {
                         <tr key={key}>
                           <td>{name}</td>
                           <td>{msu}</td>
-                          <td >{value}</td>
+                          <td>{value}</td>
                         </tr>
                       )}
                     )}
@@ -110,4 +126,45 @@ const Parameters = {
         type: 'TBit',
         msu: ''
     }
+}
+
+function getTableClickRowCol(event: any): {row: number, col: number} {
+  let cell: any = event.target;
+  if (cell.tagName.toLowerCase() !== 'td')
+    return {row: 0, col: 0};
+  let row = cell.parentNode.rowIndex;
+  let col = cell.cellIndex;
+  return {row, col};
+}
+
+class TAppError {
+  message: string = '';
+  name: string = '';
+  stack?: any
+  value?: any;
+}
+
+function RowCountError(message: string): TAppError {
+  return {
+    message,
+    name:'RowCountError',
+    value: undefined
+  }
+}
+
+function SuccessfullyValueFound(message: string, value: any): TAppError {
+  return {
+    message,
+    value,
+    name:'SuccessfullyValueFound',
+    stack: value.stack
+  }
+}
+
+function FailedSearchOfValue(message: string): TAppError {
+  return {
+    message,
+    name:'FailedSearchOfValue',
+    value: undefined
+  }
 }
