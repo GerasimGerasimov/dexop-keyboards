@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import Modal from './HOC/Modal';
 import KeyBoardNumeric from './UI/KeyBoards/KeyBoardNumeric';
+import KeyBoardBoolean from './UI/KeyBoards/KeyBoardBoolean';
 
 interface IState {
   showModal: boolean;
-  parameters: Map<string, TParameter>; 
+  parameters: Map<string, TParameter>;
+  keyBoard: string; 
 }
 
 class TParameter {
@@ -19,7 +21,8 @@ export default class DeviceParameters extends Component<{}, IState> {
     super(props)
     this.state = {
         showModal: false,
-        parameters: new Map<string, TParameter>()
+        parameters: new Map<string, TParameter>(),
+        keyBoard: 'KeyBoardNumeric' 
     };
   }
   componentWillMount () {
@@ -43,8 +46,23 @@ export default class DeviceParameters extends Component<{}, IState> {
 
   handlerModalShow(event: any) {
     const {row, col} = getTableClickRowCol(event);
-    console.log(this.getParameterByRow(row));
-    //this.setState({showModal: true})
+    const p:TParameter | undefined = this.getParameterByRow(row);
+    const type = p?.type || ''
+    const keyBoard = this.getKeyBoardType(type);
+    this.setState({
+      showModal: true,
+      keyBoard
+    })
+  }
+
+  getKeyBoardType(ParameterType: string): string {
+    switch (ParameterType) {
+      case 'TBit':
+        return 'KeyBoardBoolean'
+      case 'TFloat':
+      default:
+        return 'KeyBoardNumeric'
+    }
   }
 
   private getParameterByRow(row: number): TParameter | undefined {
@@ -67,10 +85,20 @@ export default class DeviceParameters extends Component<{}, IState> {
     this.setState({showModal: false})
   }
 
+  getKeyBoard(): any{
+    switch (this.state.keyBoard) {
+      case 'KeyBoardBoolean':
+        return KeyBoardBoolean
+      case 'KeyBoardNumeric':
+      default:
+        return KeyBoardNumeric
+    }
+  }
+
   render() {
     const modal = this.state.showModal ? (
     <Modal>
-      <KeyBoardNumeric onClick={this.handlerModalClose.bind(this)}/>
+      <{this.getKeyBoard} onClick={this.handlerModalClose.bind(this)}/>
     </Modal>
     ) : null;
 

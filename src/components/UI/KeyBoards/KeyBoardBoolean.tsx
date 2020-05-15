@@ -8,7 +8,7 @@ interface IModalProps {
     onClick: IEventFunction;
 }
 
-export default class KeyBoarBoolean extends Component<IModalProps, {}> {
+export default class KeyBoardBoolean extends Component<IModalProps, {}> {
 
   constructor (props: any){
     super(props)
