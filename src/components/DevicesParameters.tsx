@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import Modal from './Modal';
+import Modal from './HOC/Modal';
+import KeyBoardNumeric from './UI/KeyBoards/KeyBoardNumeric';
 
 interface IState {
   showModal: boolean;
@@ -51,7 +52,11 @@ export default class DeviceParameters extends Component<{}, IState> {
   }
 
   render() {
-    const modal = this.state.showModal ? (<Modal onClick={this.handlerModalClose.bind(this)}/>) : null;
+    const modal = this.state.showModal ? (
+    <Modal>
+      <KeyBoardNumeric onClick={this.handlerModalClose.bind(this)}/>
+    </Modal>
+    ) : null;
 
     return(
       <>

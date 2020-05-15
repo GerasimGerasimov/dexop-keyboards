@@ -8,7 +8,7 @@ interface IModalProps {
     onClick: IEventFunction;
 }
 
-export default class Modal extends Component<IModalProps, {}> {
+export default class KeyBoarBoolean extends Component<IModalProps, {}> {
 
   constructor (props: any){
     super(props)
@@ -20,8 +20,8 @@ export default class Modal extends Component<IModalProps, {}> {
 
   render() {
     return(
-      <div className="modal">
-        <h1>Modal</h1>
+      <div>
+        <h1>KeyBoardBoolean</h1>
           <button onClick={(e)=>this.handleHide(e)}>Hide modal</button>
       </div>
     )
