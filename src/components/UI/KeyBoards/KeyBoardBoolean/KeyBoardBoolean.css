@@ -3,7 +3,7 @@
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   gap: 1px 1px;
-  grid-template-areas: "Name Name Name Name" "No Value Value Yes" "Ok Ok Chancel Chancel";
+  grid-template-areas: "Name Name Name Name" "No Value Value Yes" "Ok Ok Cancel Cancel";
 }
 
 .Value { grid-area: Value; }
@@ -14,7 +14,7 @@
 
 .Ok { grid-area: Ok; }
 
-.Chancel { grid-area: Chancel; }
+.Cancel { grid-area: Cancel; }
 
 .Name { grid-area: Name; }
 
@@ -24,4 +24,10 @@
 
 .KeyBoardText {
   text-align: center;
+}
+
+.KeyBoardBlock {
+  background: #AFCDE7;
+  color: white;
+  box-shadow: 5px 5px 15px 5px #000000;
 }

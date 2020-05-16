@@ -1,6 +1,6 @@
 export class TParameter {
     name: string ='';
-    value: number = 0;
+    value: string = '0';
     type: string = '';
     msu: string = '';
 }
@@ -21,6 +21,12 @@ export const Parameters = {
     Toggle : {
         name: 'Toggle',
         value: 0,
+        type: 'TBit',
+        msu: ''
+    },
+    iSwitch : {
+        name: 'iSwitch',
+        value: 1,
         type: 'TBit',
         msu: ''
     }
