@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {IKeyBoardProps } from './IKeyBoards';
+import {IKeyBoardProps } from '../IKeyBoards';
 
 export default class KeyBoardNumeric extends Component<IKeyBoardProps, {}> {
 

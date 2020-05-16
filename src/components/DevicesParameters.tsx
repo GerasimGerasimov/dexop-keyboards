@@ -56,8 +56,6 @@ export default class DeviceParameters extends Component<{}, IState> {
   }
 
   render() {
-    //TODO если объект не найден, или кликнул по заголовку
-    //не должна открываться окно клавы
     const modal = this.state.showModal
     ? (<Modal>
         <KeyBoard keyBoardType={this.state.keyBoard} onClick={this.handlerModalClose.bind(this)}/>

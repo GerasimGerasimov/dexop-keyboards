@@ -1,6 +1,6 @@
 import React from 'react'
-import KeyBoardNumeric from './KeyBoardNumeric';
-import KeyBoardBoolean from './KeyBoardBoolean';
+import KeyBoardNumeric from './KeyBoardNumeric/KeyBoardNumeric';
+import KeyBoardBoolean from './KeyBoardBoolean/KeyBoardBoolean';
 import {IKeyBoardProps } from './IKeyBoards';
 
 interface IKeyBoardsProps extends IKeyBoardProps {

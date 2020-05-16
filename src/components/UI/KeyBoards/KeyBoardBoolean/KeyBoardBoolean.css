@@ -1,0 +1,27 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 1px 1px;
+  grid-template-areas: "Name Name Name Name" "No Value Value Yes" "Ok Ok Chancel Chancel";
+}
+
+.Value { grid-area: Value; }
+
+.No { grid-area: No; }
+
+.Yes { grid-area: Yes; }
+
+.Ok { grid-area: Ok; }
+
+.Chancel { grid-area: Chancel; }
+
+.Name { grid-area: Name; }
+
+.KeyBoardButton {
+  width: 100%;
+}
+
+.KeyBoardText {
+  text-align: center;
+}
