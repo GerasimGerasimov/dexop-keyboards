@@ -55,4 +55,21 @@ tr:hover td{
   align-items: center;
   justify-content: center;
 }
-  
+
+.KeyBoardButton {
+  width: 100%;
+  border: none;
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+
+.KeyBoardText {
+  border: none;
+  text-align: center;
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+}
+
+.KeyBoardBlock {
+  background: #AFCDE7;
+  color: white;
+  box-shadow: 5px 5px 15px 5px #000000;
+}
