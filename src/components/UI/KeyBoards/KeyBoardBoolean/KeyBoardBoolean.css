@@ -2,8 +2,12 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
-  gap: 1px 1px;
+  gap: 4px 4px;
   grid-template-areas: "Name Name Name Name" "No Value Value Yes" "Ok Ok Cancel Cancel";
+  
+}
+.grid-container > div {
+  padding: 5px;
 }
 
 .Value { grid-area: Value; }
@@ -20,10 +24,14 @@
 
 .KeyBoardButton {
   width: 100%;
+  border: none;
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 }
 
 .KeyBoardText {
+  border: none;
   text-align: center;
+  box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
 }
 
 .KeyBoardBlock {
