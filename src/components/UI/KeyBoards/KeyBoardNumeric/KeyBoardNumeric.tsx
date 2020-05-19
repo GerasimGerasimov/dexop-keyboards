@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {IKeyBoardProps } from '../IKeyBoards';
 import './KeyBoardNumeric.css'
+import KeyBoardButton from '../KeyBoardButton/KeyBoardButton';
 
 interface IState {
   value: string;
@@ -41,6 +42,26 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
     }
   }
 
+  private returnPrevValue() {
+    this.setState({value: this.prevValue})
+  }
+
+  private getCaretPosition(obj: any){
+    //TODO реализовать определение позиции курсора (для DEL и BACK)
+    /*
+    var cursorPos = null;
+    if (document.getSelection()){
+        var range = document.getSelection().createRange();
+        range.moveStart('textedit', -1);
+        cursorPos = range.text.length;
+    }
+    else 
+    {
+        cursorPos = obj.selectionStart;
+    }
+    */
+  }
+
   render() {
     return(
       <div className="KeyBoardBlock">
@@ -55,35 +76,26 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
                   className="KeyBoardText"
                   onChange={(event)=>this.inputChangedHandler(event)}
                   onKeyDown={(event)=>this.Enter(event)}
+                  onClick={(event)=>this.getCaretPosition(event)}
                   value = {this.state.value}>
                 </input>
             </div>
-            <div className="kbn-ok">
-              <button 
-                  className="KeyBoardButton"
-                  onClick={()=>this.handleHide('ok')}>Ok
-                </button>
-            </div>
-            <div className="kbn-cancel">
-              <button
-                className="KeyBoardButton"
-                onClick={()=>this.handleHide('cancel')}>Chancel
-              </button>
-            </div>
-            <div className="kbn-del">DEL</div>
-            <div className="kbn-backspace">←</div>
-            <div className="kbn-dot">.</div>
-            <div className="kbn-return">R</div>
-            <div className="kbn-n0">0</div>
-            <div className="kbn-n1">1</div>
-            <div className="kbn-n2">2</div>
-            <div className="kbn-n3">3</div>
-            <div className="kbn-n4">4</div>
-            <div className="kbn-n5">5</div>
-            <div className="kbn-n6">6</div>
-            <div className="kbn-n7">7</div>
-            <div className="kbn-n8">8</div>
-            <div className="kbn-n9">9</div>
+            <KeyBoardButton position="kbn-ok" value="Ok"  onClick={()=>this.handleHide('ok')}/>            
+            <KeyBoardButton position="kbn-cancel" value="Chancel"  onClick={()=>this.handleHide('cancel')}/>
+            <KeyBoardButton position="kbn-del" value="DEL"  onClick={()=>this.handleHide('cancel')}/>
+            <KeyBoardButton position="kbn-backspace" value="←"  onClick={()=>this.handleHide('cancel')}/>
+            <KeyBoardButton position="kbn-dot" value="." onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-return" value="R" onClick={()=>{this.returnPrevValue()}}/>
+            <KeyBoardButton position="kbn-n0" value="0" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n1" value="1" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n2" value="2" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n3" value="3" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n4" value="4" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n5" value="5" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n6" value="6" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n7" value="7" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n8" value="8" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n9" value="9" onClick={(event)=>{}}/>
           </div>
       </div>
     )

@@ -9,3 +9,13 @@ export interface IKeyBoardProps {
         value: string;
     }
 }
+
+export interface IValueFunction {
+    (value: any): void;
+}
+
+export interface IKeyBoardButtonProps {
+    onClick: IValueFunction;
+    position: string;
+    value: string;
+}
