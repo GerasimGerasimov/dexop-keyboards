@@ -10,6 +10,11 @@ interface IState {
 export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
 
   private prevValue: string = this.props.data.value.toString();
+  private selection = {
+    selectionStart:0,
+    selectionEnd:0,
+    selectionDirection:''
+  }
   
   constructor (props: any){
     super(props)
@@ -46,20 +51,31 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
     this.setState({value: this.prevValue})
   }
 
-  private getCaretPosition(obj: any){
-    //TODO реализовать определение позиции курсора (для DEL и BACK)
-    /*
-    var cursorPos = null;
-    if (document.getSelection()){
-        var range = document.getSelection().createRange();
-        range.moveStart('textedit', -1);
-        cursorPos = range.text.length;
+  private getCaretPosition(event: any){
+    const {selectionStart, selectionEnd, selectionDirection} = event.target;
+    this.selection = {
+      selectionStart,
+      selectionEnd,
+      selectionDirection
     }
-    else 
-    {
-        cursorPos = obj.selectionStart;
+    console.log(selectionStart, selectionEnd, selectionDirection)
+  }
+
+  //удаляет символы после курсора
+  private backSpaceKey(){
+    var value = this.state.value;
+    var begin: number = this.selection.selectionStart;
+    var end: number = this.selection.selectionEnd;
+    if (begin === end) {
+      begin = begin? --begin : begin;
     }
-    */
+    value = value.slice(0, begin) + value.slice(end);
+    this.setState({value})
+  }
+
+  //удаляет символы перед курсора
+  private deleteKey(){
+
   }
 
   render() {
@@ -76,14 +92,15 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
                   className="KeyBoardText"
                   onChange={(event)=>this.inputChangedHandler(event)}
                   onKeyDown={(event)=>this.Enter(event)}
+                  onKeyUp={(event)=>this.getCaretPosition(event)}
                   onClick={(event)=>this.getCaretPosition(event)}
                   value = {this.state.value}>
                 </input>
             </div>
             <KeyBoardButton position="kbn-ok" value="Ok"  onClick={()=>this.handleHide('ok')}/>            
             <KeyBoardButton position="kbn-cancel" value="Chancel"  onClick={()=>this.handleHide('cancel')}/>
-            <KeyBoardButton position="kbn-del" value="DEL"  onClick={()=>this.handleHide('cancel')}/>
-            <KeyBoardButton position="kbn-backspace" value="←"  onClick={()=>this.handleHide('cancel')}/>
+            <KeyBoardButton position="kbn-del" value="DEL"  onClick={()=>this.deleteKey()}/>
+            <KeyBoardButton position="kbn-backspace" value="←"  onClick={()=>this.backSpaceKey()}/>
             <KeyBoardButton position="kbn-dot" value="." onClick={(event)=>{}}/>
             <KeyBoardButton position="kbn-return" value="R" onClick={()=>{this.returnPrevValue()}}/>
             <KeyBoardButton position="kbn-n0" value="0" onClick={(event)=>{}}/>
