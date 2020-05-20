@@ -61,7 +61,7 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
     console.log(selectionStart, selectionEnd, selectionDirection)
   }
 
-  //удаляет символы после курсора
+  //удаляет символы перед курсором
   private backSpaceKey(){
     var value = this.state.value;
     var begin: number = this.selection.selectionStart;
@@ -73,9 +73,17 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
     this.setState({value})
   }
 
-  //удаляет символы перед курсора
+  //удаляет символы после курсора
   private deleteKey(){
-
+    var value = this.state.value;
+    var begin: number = this.selection.selectionStart;
+    var end: number = this.selection.selectionEnd;
+    if (begin === end) {
+      //end = end? ++end : end;
+      end ++;
+    }
+    value = value.slice(0, begin) + value.slice(end);
+    this.setState({value})
   }
 
   render() {
