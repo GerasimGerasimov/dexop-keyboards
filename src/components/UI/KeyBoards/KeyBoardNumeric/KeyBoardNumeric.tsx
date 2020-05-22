@@ -55,6 +55,7 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
       selectionEnd,
       selectionDirection
     }
+    this.position = this.selection.selectionStart;
     console.log(selectionStart,
                  selectionEnd,
                   selectionDirection,
@@ -62,7 +63,7 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
   }
 
   //удаляет символы перед курсором
-  private __backSpaceKey(){
+  private backSpaceKey(){
     var value = this.state.value;
     var begin: number = this.selection.selectionStart;
     var end: number = this.selection.selectionEnd;
@@ -94,93 +95,35 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
   private focus() {
     const position = this.position;
     console.log('focus:',position)
-    // Explicitly focus the text input using the raw DOM API
-    // Note: we're accessing "current" to get the DOM node
-    //this.textInput.current.setSelectionRange(position, position);
     this.textInput.current.focus();
   }
 
   componentDidUpdate(){
-    //this.getCaretPosition(this.textInput.current);
+    var position: number = this.position;
+    this.textInput.current.setSelectionRange(position, position)
     this.focus();
   }
 
-  private Enter(event: any) {
+  private Enter(event: any): boolean {
     event.persist();
     console.log('Enter',event);
     if(event.key === 'Enter'){
-      this.handleHide('ok')
+      this.handleHide('ok');
+      return true;
     }
+    return false;
   }
 
-  private upKeys(event: any) {
-    /*
-    this.getCaretPosition(this.textInput.current);
-    if (event.key === 'Backspace') {
-      this.position = this.selection.selectionStart;
-      console.log('upKeys: Backspace: new pos'+this.position)
-      return;
-    }
-    this.position = this.position+2;//this.selection.selectionStart;
-    console.log('upKeys: new pos'+this.position)
-    */
+  private upKeys(char: string) {
+    this.focus();
+    var position: number = this.position;
+    var value = this.state.value;
+    var a = value.split(' '); 
+    a.splice(position, 0, char);
+    value = a.join('');
+    this.setState(state => ({value}))
   }
 
-  private __setUserKeyBoardEvent(key: string) {
-    var ev = new KeyboardEvent('keypress',
-    {altKey:false,
-      bubbles: true,
-      cancelable: true,
-      key: key,//"Enter",
-      code: key,//"Enter",
-      composed: true,
-      ctrlKey: false,
-      detail: 0,
-      isComposing: false,
-      location: 0,
-      metaKey: false,
-      repeat: false,
-      shiftKey: false});
-    
-      this.focus();
-      this.textInput.current.dispatchEvent(ev);
-  }
-
-  private setUserKeyBoardEvent(key: string) {
-    const keyObj: any = { key ,
-      bubbles: true,
-      cancelable: false,
-      keyCode:8,
-      which: 8
-    }
-    var down = new KeyboardEvent('keydown', keyObj);
-    var press = new KeyboardEvent('keypress', keyObj);
-    var up = new KeyboardEvent('keyup', keyObj);
-      //this.focus();
-      this.textInput.current.dispatchEvent(down);
-      this.textInput.current.dispatchEvent(press);
-      this.textInput.current.dispatchEvent(up);
-    /*
-      console.log('setUserKeyBoardEvent')
-      var ev = new KeyboardEvent('keydown' , {key, code: '8'});
-      this.focus();
-      this.textInput.current.dispatchEvent(ev);
-      */
-  }
-
-  //удаляет символы перед курсором
-  private backSpaceKey(){
-    this.setUserKeyBoardEvent('Backspace')
-  }
-
-  private handleKeypress(event: any) {
-    console.log('handleKeypress'+event.key)
-    if(event.keyCode == 0 && event.key != "") {
-      this.textInput.current.value += event.key;
-    }
-  }
-  
-  //onKeyUp={(event)=>this.getCaretPosition(event.target)}
   render() {
     return(
       <div className="KeyBoardBlock">
@@ -195,9 +138,7 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
                   ref={this.textInput}
                   className="KeyBoardText"
                   onChange={(event)=>this.inputChangedHandler(event)}
-                  onKeyPress={(event)=>this.handleKeypress(event)}
-                  onKeyDown={(event)=>this.Enter(event)}
-                  onKeyUp={(event)=>this.upKeys(event)}
+                  onKeyUp={(event)=>this.Enter(event)}
                   onClick={(event)=>this.getCaretPosition(event.target)}
                   value = {this.state.value}>
                 </input>
@@ -208,7 +149,7 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
             <KeyBoardButton position="kbn-backspace" value="←"  onClick={()=>this.backSpaceKey()}/>
             <KeyBoardButton position="kbn-dot" value="." onClick={(event)=>{}}/>
             <KeyBoardButton position="kbn-return" value="R" onClick={()=>{this.returnPrevValue()}}/>
-            <KeyBoardButton position="kbn-n0" value="0" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n0" value="0" onClick={() => {this.upKeys('0')}}/>
             <KeyBoardButton position="kbn-n1" value="1" onClick={(event)=>{}}/>
             <KeyBoardButton position="kbn-n2" value="2" onClick={(event)=>{}}/>
             <KeyBoardButton position="kbn-n3" value="3" onClick={(event)=>{}}/>
@@ -223,3 +164,26 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
     )
   }
 }
+
+/*
+  private setUserKeyBoardEvent(key: string) {
+    const keyObj: any = { key ,
+      bubbles: true,
+      cancelable: false,
+      keyCode:8,
+      which: 8
+    }
+    var down = new KeyboardEvent('keydown', keyObj);
+    var press = new KeyboardEvent('keypress', keyObj);
+    var up = new KeyboardEvent('keyup', keyObj);
+      this.focus();
+      this.textInput.current.dispatchEvent(down);
+      this.textInput.current.dispatchEvent(press);
+      this.textInput.current.dispatchEvent(up);
+  }
+
+  //удаляет символы перед курсором
+  private backSpaceKey(){
+    this.setUserKeyBoardEvent('Backspace')
+  }
+*/
