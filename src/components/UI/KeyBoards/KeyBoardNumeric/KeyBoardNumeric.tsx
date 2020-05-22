@@ -71,8 +71,7 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
       begin = begin? --begin : begin;
     }
     value = value.slice(0, begin) + value.slice(end);
-    this.setState({value});
-    //begin = begin? --begin : begin;
+    this.setState(state => ({value}));
     this.selection.selectionStart = this.selection.selectionEnd = begin;
     this.position = begin;
     this.focus();
@@ -87,7 +86,7 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
       end ++;
     }
     value = value.slice(0, begin) + value.slice(end);
-    this.setState({value});
+    this.setState(state => ({value}));
     this.position = end;
     this.focus();
   }
@@ -104,24 +103,24 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
     this.focus();
   }
 
-  private Enter(event: any): boolean {
+  private Enter(event: any) {
     event.persist();
-    console.log('Enter',event);
     if(event.key === 'Enter'){
       this.handleHide('ok');
-      return true;
+      return;
     }
-    return false;
+    this.getCaretPosition(event.target);
+    this.position++;
   }
 
   private upKeys(char: string) {
-    this.focus();
     var position: number = this.position;
     var value = this.state.value;
     var a = value.split(' '); 
     a.splice(position, 0, char);
     value = a.join('');
-    this.setState(state => ({value}))
+    this.position++;
+    this.setState(state => ({value}));
   }
 
   render() {
@@ -138,7 +137,7 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
                   ref={this.textInput}
                   className="KeyBoardText"
                   onChange={(event)=>this.inputChangedHandler(event)}
-                  onKeyUp={(event)=>this.Enter(event)}
+                  onKeyDown={(event)=>this.Enter(event)}
                   onClick={(event)=>this.getCaretPosition(event.target)}
                   value = {this.state.value}>
                 </input>
@@ -147,18 +146,18 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
             <KeyBoardButton position="kbn-cancel" value="Chancel"  onClick={()=>this.handleHide('cancel')}/>
             <KeyBoardButton position="kbn-del" value="DEL"  onClick={()=>this.deleteKey()}/>
             <KeyBoardButton position="kbn-backspace" value="←"  onClick={()=>this.backSpaceKey()}/>
-            <KeyBoardButton position="kbn-dot" value="." onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-dot" value="." onClick={() => {this.upKeys('.')}}/>
             <KeyBoardButton position="kbn-return" value="R" onClick={()=>{this.returnPrevValue()}}/>
             <KeyBoardButton position="kbn-n0" value="0" onClick={() => {this.upKeys('0')}}/>
-            <KeyBoardButton position="kbn-n1" value="1" onClick={(event)=>{}}/>
-            <KeyBoardButton position="kbn-n2" value="2" onClick={(event)=>{}}/>
-            <KeyBoardButton position="kbn-n3" value="3" onClick={(event)=>{}}/>
-            <KeyBoardButton position="kbn-n4" value="4" onClick={(event)=>{}}/>
-            <KeyBoardButton position="kbn-n5" value="5" onClick={(event)=>{}}/>
-            <KeyBoardButton position="kbn-n6" value="6" onClick={(event)=>{}}/>
-            <KeyBoardButton position="kbn-n7" value="7" onClick={(event)=>{}}/>
-            <KeyBoardButton position="kbn-n8" value="8" onClick={(event)=>{}}/>
-            <KeyBoardButton position="kbn-n9" value="9" onClick={(event)=>{}}/>
+            <KeyBoardButton position="kbn-n1" value="1" onClick={() => {this.upKeys('1')}}/>
+            <KeyBoardButton position="kbn-n2" value="2" onClick={() => {this.upKeys('2')}}/>
+            <KeyBoardButton position="kbn-n3" value="3" onClick={() => {this.upKeys('3')}}/>
+            <KeyBoardButton position="kbn-n4" value="4" onClick={() => {this.upKeys('4')}}/>
+            <KeyBoardButton position="kbn-n5" value="5" onClick={() => {this.upKeys('5')}}/>
+            <KeyBoardButton position="kbn-n6" value="6" onClick={() => {this.upKeys('6')}}/>
+            <KeyBoardButton position="kbn-n7" value="7" onClick={() => {this.upKeys('7')}}/>
+            <KeyBoardButton position="kbn-n8" value="8" onClick={() => {this.upKeys('8')}}/>
+            <KeyBoardButton position="kbn-n9" value="9" onClick={() => {this.upKeys('9')}}/>
           </div>
       </div>
     )
