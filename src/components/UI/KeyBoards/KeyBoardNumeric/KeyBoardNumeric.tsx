@@ -103,7 +103,7 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
     this.focus();
   }
 
-  private Enter(event: any) {
+  private downInpurKey(event: any) {
     event.persist();
     if(event.key === 'Enter'){
       this.handleHide('ok');
@@ -137,7 +137,7 @@ export default class KeyBoardNumeric extends Component<IKeyBoardProps, IState> {
                   ref={this.textInput}
                   className="KeyBoardText"
                   onChange={(event)=>this.inputChangedHandler(event)}
-                  onKeyDown={(event)=>this.Enter(event)}
+                  onKeyDown={(event)=>this.downInpurKey(event)}
                   onClick={(event)=>this.getCaretPosition(event.target)}
                   value = {this.state.value}>
                 </input>

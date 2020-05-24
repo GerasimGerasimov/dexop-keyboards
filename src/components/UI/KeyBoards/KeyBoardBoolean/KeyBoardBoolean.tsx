@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {IKeyBoardProps } from '../IKeyBoards';
 import './KeyBoardBoolean.css'
+import KeyBoardButton from '../KeyBoardButton/KeyBoardButton';
 
 interface IState {
   value: string;
@@ -28,17 +29,13 @@ export default class KeyBoardBoolean extends Component<IKeyBoardProps, IState> {
     this.props.onClick(result);
   }
 
-  handlerSetTrue(){
-    this.setState({value:"1"})
-  }
-
-  handlerSetFalse(){
-    this.setState({value:"0"})
+  handlerSetValue(value:string){
+    this.setState(state => ({value}));
   }
 
   inputChangedHandler = (event: any) => {
     const value = event.target.value;
-    this.setState({value})
+    this.setState(state => ({value}));
     console.log(this.state.value)
   }
 
@@ -54,33 +51,11 @@ export default class KeyBoardBoolean extends Component<IKeyBoardProps, IState> {
                 value = {this.state.value}>
               </input>
             </div>
-            <div className="Ok">
-              <button 
-                className="KeyBoardButton"
-                onClick={()=>this.handleHide('ok')}>Ok
-              </button>
-            </div>
-            <div className="Cancel">
-              <button
-                className="KeyBoardButton"
-                onClick={()=>this.handleHide('cancel')}>Chancel
-              </button>
-            </div>
-            <div className="No">
-              <button 
-                className="KeyBoardButton"
-                onClick={()=>{this.handlerSetFalse()}}
-                >0
-              </button>
-            </div>
-            <div className="Yes">
-            <button 
-                className="KeyBoardButton"
-                onClick={()=>{this.handlerSetTrue()}}
-                >1
-              </button>
-            </div>
-            <div className="Name">{this.props.data.name}</div>
+            <KeyBoardButton position="Ok" value="Ok" onClick={()=>this.handleHide('ok')}/>
+            <KeyBoardButton position="Cancel" value="Cancel" onClick={()=>this.handleHide('cancel')}/>
+            <KeyBoardButton position="No" value="0" onClick={()=>{this.handlerSetValue('0')}}/>
+            <KeyBoardButton position="Yes" value="1" onClick={()=>{this.handlerSetValue('1')}}/>
+            <div className="Name">{`${this.props.data.name}:${this.prevValue}`}</div>
           </div>
       </div>
     )
